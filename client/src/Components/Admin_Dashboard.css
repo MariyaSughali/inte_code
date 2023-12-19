@@ -1,0 +1,396 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Raleway&display=swap");
+/* SECTION */
+.middle {
+  display: grid;
+  flex-direction: row;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: 50% 50%;
+  grid-gap: 7px;
+  justify-content: space-evenly;
+  /* margin-left: 5px; */
+  /* align-items: center; */
+}
+
+.card {
+  /* width: 80%; */
+  width: 325px;
+  box-shadow: 1px 4px 7px #00000029;
+  background: var(--color-white);
+  height: 280px !important;
+  margin-top: 25px;
+  word-wrap: initial;
+  padding-bottom: 10px;
+}
+.text {
+  font-size: large;
+  margin-bottom: 5px;
+}
+.task {
+  width: 70%;
+  box-shadow: 1px 4px 7px #00000029;
+  background: var(--color-white);
+}
+
+.middle p {
+  font-size: medium;
+  background: var(--color-gray-light);
+  color: var(--color-gray-dark);
+  padding: 15px;
+  padding-left: 25px;
+  font-weight: bold;
+}
+
+.middle a {
+  background: var(--color-white);
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  height: 4.2rem;
+  color: var(--color-gray-dark);
+  position: relative;
+}
+
+.middle a:hover {
+  color: var(--color-primary);
+}
+
+@media screen and (max-width: 1024px) {
+  section {
+    grid-template-columns: 50% 50%;
+  }
+}
+/* ROOT CSS VARIABLES */
+:root {
+  --color-white: #ffffff;
+  --color-light-blue: #f2fbfe;
+  --color-blue: #2bb8e6;
+  --color-gray-light: #f2f2f2;
+  --color-gray-dark: #606060;
+  --color-dark: pink;
+
+  --color-primary: #e6592b;
+  /* --color-sucess-light:;
+	--color-danger-light:;
+	--color-blue-light:;  */
+
+  --card-padding: 1.6rem;
+  --padding-1: 1rem;
+  --padding-2: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  list-style: none;
+  text-decoration: none !important;
+}
+
+/* html {
+  font-size: 12px;
+} */
+
+body {
+  background: var(--color-light-blue);
+  font-family: raleway;
+  min-height: 100vh;
+  color: var(--color-gray-dark);
+}
+
+img {
+  width: 100%;
+}
+
+/* NAV BAR */
+
+nav {
+  width: 100%;
+  background: var(--color-white);
+  padding: 1rem 0;
+}
+
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 96%;
+  margin: 0 auto;
+}
+
+nav img.logo {
+  width: 10rem;
+}
+
+nav .search-bar {
+  background: var(--color-gray-light);
+  padding: var(--padding-2) var(--card-padding);
+  width: 32vw;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-gray-dark);
+  position: absolute;
+  left: 35%;
+}
+
+nav .search-bar input[type="search"] {
+  color: #000000;
+  background: transparent;
+  width: 100%;
+}
+
+nav .search-bar input[type="search"]::placeholder {
+  color: var(--color-gray-dark);
+}
+
+nav .profile-area {
+  display: flex;
+  align-items: center;
+  margin: 0% 1% 0% 1%;
+  justify-content: space-between;
+}
+
+nav .profile-area .profile {
+  display: flex;
+  align-items: center;
+}
+
+nav .profile-area .profile-photo {
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+nav .profile-area button {
+  display: none;
+}
+
+/* END OF NAV BAR */
+
+/* SIDE BAR */
+
+main {
+  display: grid;
+  grid-template-columns: 16rem auto;
+  max-width: 100%;
+  text-decoration: none !important;
+}
+
+/* main section.middle{
+	background: blueviolet;
+} */
+
+main aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  background: var(--color-white);
+  width: 270px;
+}
+
+main aside button#close-btn {
+  display: none;
+}
+
+.google-icon {
+  font-size: 35px !important;
+  display: inline-block !important;
+}
+
+main aside .sidebar a {
+  display: flex;
+  align-items: center;
+  width: 260px;
+  gap: 1.2rem;
+  height: 4.2rem;
+  color: var(--color-gray-dark);
+  position: relative;
+  background: var(--color-white);
+}
+
+main aside .sidebar a span {
+  font-size: 1.7rem;
+  margin-left: 3rem;
+  transition: all 300ms ease;
+}
+
+main aside .sidebar a.active {
+  background: var(--color-light-blue);
+  border-left: 7.5px solid var(--color-gray-dark) !important;
+}
+/* main aside .sidebar a.active :after {
+  width: 6px;
+  height: 100%;
+  position: absolute;
+  background: var(--color-gray-dark) !important;
+} */
+
+main aside .sidebar a:hover {
+  color: var(--color-primary);
+}
+
+main aside .sidebar a:hover span {
+  margin-left: 2rem;
+}
+
+main aside .sidebar h4 {
+  font-weight: bold;
+}
+
+/* LOGIN BUTTON */
+
+.button {
+  border-radius: 0px;
+  background-color: #2bb8e6;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 20px;
+  padding: 10px;
+  width: 97%;
+  height: 42px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/* END OF BUTTON */
+
+/* BUTTON */
+
+.button1 {
+  border-radius: 0px;
+  background-color: #2bb8e6;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 20px;
+  padding: 10px;
+  width: 10%;
+  height: 42px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button1 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button1 span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button1:hover span {
+  padding-right: 25px;
+}
+
+.button1:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/* END OF BUTTON */
+
+/* MEDIA QUERY */
+
+@media screen and (max-width: 1024px) {
+  nav .search-bar {
+    display: none;
+  }
+  nav .profile-area {
+    gap: 2rem;
+  }
+  nav .profile-area button#menu-btn {
+    display: inline;
+    background: transparent;
+    color: var(--color-gray-dark);
+  }
+  main {
+    grid-template-columns: 1fr;
+  }
+  main aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background: var(--color-white);
+    width: 22rem;
+    height: 100vh;
+    box-shadow: 2rem 0 2rem var(--color-gray-light);
+    display: none;
+    animation: showSidebar 300ms ease forwards;
+  }
+
+  @keyframes showSidebar {
+    to {
+      left: 0;
+    }
+  }
+  main aside button#close-btn {
+    display: inline-block;
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 4;
+    background: transparent;
+    color: var(--color-gray-dark);
+  }
+  button:hover {
+    cursor: pointer;
+  }
+  main aside .sidebar {
+    margin-top: 4rem;
+  }
+}
+
+@media screen and(max-width:600px) {
+  nav.profile-area {
+    gap: 2.6rem;
+  }
+  nav .profile h5,
+  nav .prfile span {
+    display: none;
+  }
+}

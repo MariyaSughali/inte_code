@@ -1,0 +1,215 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Raleway&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.body {
+  overflow: hidden;
+}
+
+.container_box {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 7rem;
+  /* padding: 0 2rem; */
+  background: #2bb8e6;
+}
+
+.image .logo{
+  width: 20rem;
+  margin-left: 2%;
+}
+
+.img {
+  width: 100%;
+  height: auto;
+  margin-left: 2%;
+}
+.login-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  background: white;
+}
+
+.title {
+  font: "Raleway", sans-serif;
+  color: #707070;
+}
+
+/* BUTTON */
+
+.button {
+  border-radius: 0px;
+  background-color: #2bb8e6;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 20px;
+  padding: 10px;
+  width: 97%;
+  height: 42px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  margin-top: 1rem;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/* END OF BUTTON */
+
+.wrapper {
+  width: 70%;
+  background: #fff;
+  border-radius: 0;
+  box-shadow: 0px 4px 10px 1px rgba(0, 0, 0, 0.1);
+  float: right;
+  height: fit-content;
+  padding: 5px;
+  /* left: 90px; */
+  position: relative;
+}
+
+.wrapper .title {
+  height: 90px;
+  color: #707070;
+  font-size: 30px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Raleway";
+}
+.wrapper form {
+  padding: 30px 25px 25px 25px;
+}
+.wrapper form .row {
+  height: 45px;
+  margin-bottom: 15px;
+  position: relative;
+}
+.wrapper form .row input {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  padding-left: 60px;
+  border-radius: 0px;
+  background: #f2f2f2;
+  border: none;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  font-family: "Raleway";
+}
+.Input_Error {
+  color: red;
+  border: 1px solid rgb(117, 12, 12);
+  box-shadow: inset 0px 0px 2px 2px rgba(236, 91, 91, 0.94);
+}
+.Error_msg {
+  font-family: "Raleway", "sans serif";
+  color: rgb(229, 70, 70);
+}
+form .row input:focus {
+  border-color: #868686;
+  box-shadow: inset 0px 0px 2px 2px rgba(76, 83, 81, 0.25);
+}
+form .row input::placeholder {
+  color: #999;
+}
+.wrapper form .row i {
+  position: absolute;
+  width: 47px;
+  height: 100%;
+  color: #bbbbbb;
+  font-size: 18px;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wrapper form .pass {
+  margin: -8px 0 20px 0;
+  text-align: right;
+}
+.wrapper form .pass a {
+  color: #2bb8e6;
+  font-size: 17px;
+  text-decoration: none;
+  font-family: raleway;
+  text-align: right;
+}
+.wrapper form .pass a:hover {
+  text-decoration: underline;
+}
+.wrapper form .button input {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  padding-left: 0px;
+  background: #2bb8e6;
+  border: 1px solid#2BB8E6;
+  cursor: pointer;
+}
+form .button input:hover {
+  background: #2bb8e6;
+}
+
+@media screen and (max-width: 1180px) {
+  .container {
+    grid-gap: 5rem;
+    grid-template-columns: repeat(1, 1fr);
+    justify-content: center;
+  }
+  .image {
+    display: none;
+  }
+  .login-content {
+    background: #2bb8e6;
+    justify-content: center;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    left: 90px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .container {
+    grid-gap: 0;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+}

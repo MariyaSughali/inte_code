@@ -1,0 +1,106 @@
+.audio2text {
+  width: 100vw;
+}
+.audio {
+  background-color: #f2fbfe;
+  height: 645px;
+}
+.AudioPlayer {
+  display: flex;
+  width: 97%;
+  margin-left: 3%;
+}
+.audio_content {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  flex: 1;
+}
+.transcribe {
+  flex: 1;
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+}
+.transcribe button {
+  background-color: #e6592b;
+  color: #ffffff;
+  border: none;
+  width: 115px;
+  height: 35%;
+  border-radius: 5px;
+}
+.audio_range {
+  width: 80%;
+  height: 10px;
+  -webkit-appearance: none;
+  background: linear-gradient(to right, black, transparent);
+  outline: none;
+  border-radius: 5px;
+}
+
+.audio_range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background: black;
+  cursor: pointer;
+}
+
+.buttons-container {
+  display: flex;
+  margin-top: 10px;
+}
+
+.buttons-container button {
+  margin: 0 10px;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+}
+
+.MuiSvgIcon-root {
+  font-size: 2.5rem !important;
+}
+.audio_textarea {
+  resize: both;
+  overflow: auto;
+  width: 95%;
+  height: 350px;
+  margin: 30px;
+  border-color: #ffffff;
+  background-color: #ffffff;
+  padding: 20px;
+}
+.trans_next button {
+  display: flex;
+  background-color: #e6592b;
+  color: #ffffff;
+  border: none;
+  height: 35px;
+  width: 89px;
+  border-radius: 5px;
+  font-size: larger;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.trans_next {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 3%;
+}
+.trans_next button:disabled {
+  opacity: 50%;
+}
+
+/* chumma topbar  */
+.top {
+  height: 100px;
+  background-color: #2bb8e6;
+  width: 100%;
+}
