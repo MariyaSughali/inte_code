@@ -1,8 +1,6 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Edit_profile from "./Edit_profile";
 import Edit_password from "./Edit_password";
 import profile from "../../assets/profile.png";

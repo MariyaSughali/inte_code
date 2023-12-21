@@ -1,11 +1,41 @@
-// import "../CSS/reviewer_dashboard.css";
 import logo from "../../assets/applogo.png";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
+import axios from "axios";
 
 function Topbar() {
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate("/reviewer_dashboard/editprofile");
+  };
+  const { currentuserId } = useAuth();
+
+  const [changedData, setChangedData] = useState([]);
+
+  useEffect(() => {
+    fetchUserProfile();
+    console.log("topbar");
+  }, []);
+
+  const fetchUserProfile = async () => {
+    try {
+      const user_id = currentuserId;
+      await axios
+        .get(`http://localhost:3002/api/getuserprofile/${user_id}`)
+        .then((res) => {
+          setChangedData(res.data[0]);
+          console.log(res.data[0]);
+        });
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
   return (
     <div>
       <div className="r_topbar">
@@ -42,8 +72,9 @@ function Topbar() {
         <div className="r_profile">
           <img
             className="r_img_profile"
-            src="https://tranxify.s3.ap-south-1.amazonaws.com/profile.png"
+            src={changedData.profile_pic_link}
             alt="img"
+            onClick={handleProfileClick}
           ></img>
         </div>
       </div>

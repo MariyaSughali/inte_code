@@ -21,7 +21,7 @@ const multerS3 = require("multer-s3");
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: "texta-app",
+    bucket: "tranxify",
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.originalname });
     },
@@ -33,7 +33,6 @@ const upload = multer({
 
 const upload_picture = async (req, res) => {
   try {
-    ("use strict");
     const id = req.params.id;
     res.send({ data: req.file, message: "Successfully uploaded" });
   } catch (error) {
@@ -43,14 +42,12 @@ const upload_picture = async (req, res) => {
 };
 
 const get_picture = async (req, res) => {
-  "use strict";
   const params = {
-    Bucket: "texta-app",
+    Bucket: "tranxify",
     Key: req.params.filename,
     Expires: 604799,
   };
   const id = req.params.id;
-  // const id = req.params.id;
   s3.getSignedUrl("getObject", params, async function (err, url) {
     if (err) {
       res.status(500).json({ message: "Error in generating signed URL" });

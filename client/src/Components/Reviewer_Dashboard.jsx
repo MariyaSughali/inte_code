@@ -7,6 +7,7 @@ import Completed from "./reviewer/completed";
 import MainReviewer from "./reviewer/main";
 import MyQueue from "./reviewer/myQueue";
 import AudioPlayer from "./audio_to_text/audio_to_text";
+import Edit_profile from "./Admin/Edit_profile";
 import { useAuth } from "../AuthContext";
 
 function Reviewer_Dashboard() {
@@ -22,7 +23,6 @@ function Reviewer_Dashboard() {
       <Topbar />
       <div className="revcontent">
         <main>
-          {/* Conditionally render the sidebar based on the path */}
           {shouldShowSidebar() && (
             <aside>
               <ReviewerSidebar />
@@ -34,6 +34,7 @@ function Reviewer_Dashboard() {
             <Route path="completed" element={<Completed />} />
             <Route path="myqueue" element={<MyQueue />} />
             <Route path="audio2text/:fileId" element={<AudioPlayer />} />
+            <Route path="editprofile" element={<Edit_profile />} />
           </Routes>
         </main>
       </div>

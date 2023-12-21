@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
+import { TextField } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Popup from "reactjs-popup";
+import EditPassword from "./Edit_password";
 
 function Edit_profile() {
-  const [changedData, setChangedData] = useState({
-    id: "",
-    firstname: "",
-    secondname: "",
-    email: "",
-    phone: "",
-    role: "",
-    language: "",
-    image: "",
-  });
-  const [ischanged, setischanged] = useState(false);
+  const { currentuserId } = useAuth();
+
+  const [changedData, setChangedData] = useState([]);
+  const [ischanged, setIsChanged] = useState(false);
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, [ischanged]);
+
+  const fetchUserProfile = async () => {
+    try {
+      const user_id = currentuserId;
+      await axios
+        .get(`http://localhost:3002/api/getuserprofile/${user_id}`)
+        .then((res) => {
+          setChangedData(res.data[0]);
+          console.log(res.data[0]);
+        });
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
   const handleChanges = (e) => {
     const { name, value } = e.target;
     setChangedData((prevData) => ({
@@ -22,145 +37,260 @@ function Edit_profile() {
       [name]: value,
     }));
   };
+
   const handleSubmit = async () => {
     try {
-      const update = () => {
-        axios.put("http://localhost:3008/editdata", changedData);
-        alert("Profile updated successfully");
+      const updateProfile = async () => {
+        await axios.put("http://localhost:3002/api/editprofile", changedData);
+        toast.success("Profile updated successfully");
+        setIsChanged(!ischanged);
       };
 
-      function validateEmail(email) {
-        var emailPattern = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.com$/;
+      const validateEmail = (email) => {
+        const emailPattern = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.[a-zA-Z]{2,4}$/;
         return emailPattern.test(email);
-      }
+      };
 
-      function validatePhone(phone) {
-        var phonePattern = /^\d{10}$/;
+      const validatePhone = (phone) => {
+        const phonePattern = /^\d{10}$/;
         return phonePattern.test(phone);
-      }
+      };
 
-      //validate phone number
-      if (!validatePhone(changedData.phone)) {
-        alert("invalid Phone number");
-      }
-      //validate email
-      if (!validateEmail(changedData.email)) {
-        alert("invalid email");
-      }
-      if (
-        validatePhone(changedData.phone) &&
-        validateEmail(changedData.email)
-      ) {
-        update();
+      if (!validatePhone(changedData.phone_number)) {
+        toast.error("Invalid Phone number");
+      } else if (!validateEmail(changedData.email)) {
+        toast.error("Invalid email");
+      } else {
+        await updateProfile();
       }
     } catch (error) {
       console.error("Error updating profile data:", error);
     }
-    setischanged(!ischanged);
   };
-  const handleCancel = () => {
-    setischanged(!ischanged);
+
+  // image upload
+  const [selectedFile, setSelectedFile] = useState();
+  // Function to handle file selection
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
+  // Function to upload the selected image to AWS S3
+  const uploadImage = async () => {
+    if (!selectedFile) {
+      toast.error("Please select an image to upload");
+      return;
+    }
+
+    // Validate if the selected file is an image
+    if (!selectedFile.type.startsWith("image")) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    // Create a FormData object to send the image file
+    const formData = new FormData();
+    formData.append("photos", selectedFile);
+
+    try {
+      await axios.post(
+        `http://localhost:3002/api/profilepicture/${changedData.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      await axios.get(
+        `http://localhost:3002/api/profile/${selectedFile.name}/${changedData.id}`
+      );
+      setIsChanged(!ischanged);
+      toast.success("Image uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Image upload failed");
+    }
+  };
+
   return (
-    <div className="secondhalf">
-      <h2>DETAILS</h2>
-      <br></br>
-      <div className="divide ">
-        <div className="both">
-          <div className="form-row">
-            <label for="firstname">First Name </label>
-            <input
-              type="text"
-              name="firstname"
-              id="firstname"
-              value={changedData.firstname}
-              onChange={handleChanges}
-              required
+    <div className="profile">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="colored"
+      />
+      <div style={{ display: "flex" }}>
+        <img
+          className="profile_page_pic"
+          id="profile"
+          src={changedData.profile_pic_link}
+          alt="profile"
+        />
+        <div className="upload_new_image_label">
+          <input
+            className="profile_pic_input"
+            type="file"
+            id="fileInput"
+            accept="image/*"
+            onChangeCapture={uploadImage}
+            onInputCapture={handleFileChange}
+            required
+            style={{ display: "none" }}
+          />
+          <label htmlFor="fileInput">
+            <TextField
+              helperText="JPG or PNG is allowed *"
+              id="demo-helper-text-misaligned"
+              label="Upload new image"
+              variant="outlined"
+              fullWidth
+              InputLabelProps={{
+                shrink: false,
+              }}
+              InputProps={{
+                readOnly: true,
+                onClick: () => document.getElementById("fileInput").click(),
+              }}
             />
-            <br />
-          </div>
-
-          <div className="form-row">
-            <label for="email">Email </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={changedData.email}
-              onChange={handleChanges}
-              required
-            />
-            <br />
-          </div>
-
-          <div className="form-row">
-            <label for="role">Role </label>
-            <input
-              type="text"
-              className="pointerevent"
-              name="role"
-              id="role"
-              defaultValue={changedData.role}
-              readonly
-            />
-          </div>
-        </div>
-        <br></br>
-        <div className="both">
-          <div className="form-row">
-            <label>Last Name </label>
-            <input
-              type="text"
-              name="secondname"
-              id="secondname"
-              value={changedData.secondname}
-              onChange={handleChanges}
-              required
-            />
-            <br />
-          </div>
-
-          <div className="form-row">
-            <label className="">Phone</label>
-            <input
-              type="text"
-              name="phone"
-              id="phone"
-              value={changedData.phone}
-              onChange={handleChanges}
-              required
-            />
-            <br />
-          </div>
-
-          <div className="form-row">
-            <label>Language </label>
-            <input
-              type="text"
-              className="pointerevent"
-              name="language"
-              id="language"
-              value={changedData.language}
-              readOnly
-            />
-            <br></br>
-          </div>
+          </label>
         </div>
       </div>
-      <div className="fullbutton">
-        <button type="button" className="update_button" onClick={handleSubmit}>
+      <br />
+      <div className="profile_box">
+        <div className="prfile1box">
+          <TextField
+            label="First Name"
+            name="first_name"
+            value={changedData.first_name || ""}
+            onChange={handleChanges}
+            variant="outlined"
+            disabled
+            fullWidth
+            InputProps={{
+              style: {
+                height: "40px",
+                padding: "5px",
+                readOnly: true,
+              },
+            }}
+          />
+          <br />
+          <br></br>
+          <TextField
+            label="Email"
+            name="email"
+            value={changedData.email || ""}
+            onChange={handleChanges}
+            required
+            variant="outlined"
+            fullWidth
+            InputProps={{
+              style: {
+                height: "40px",
+                padding: "5px",
+              },
+            }}
+          />
+          <br /> <br></br>
+          <TextField
+            label="Language"
+            name="language_name"
+            value={changedData.language_name || ""}
+            variant="outlined"
+            fullWidth
+            disabled
+            InputProps={{
+              style: {
+                height: "40px",
+                padding: "5px",
+                readOnly: true,
+              },
+            }}
+          />
+          <br /> <br></br>
+        </div>
+        <div className="profile2box">
+          <TextField
+            label="Last Name"
+            name="last_name"
+            value={changedData.last_name || ""}
+            onChange={handleChanges}
+            variant="outlined"
+            fullWidth
+            disabled
+            InputProps={{
+              style: {
+                height: "40px",
+                padding: "5px",
+                readOnly: true,
+              },
+            }}
+          />
+          <br />
+          <TextField
+            label="Phone"
+            name="phone_number"
+            value={changedData.phone_number || ""}
+            onChange={handleChanges}
+            required
+            variant="outlined"
+            fullWidth
+            InputProps={{
+              style: {
+                height: "40px",
+                padding: "5px",
+              },
+            }}
+          />
+          <br></br>
+          <TextField
+            label="Role"
+            name="role"
+            value={changedData.role_name || ""}
+            variant="outlined"
+            disabled
+            fullWidth
+            InputProps={{
+              style: {
+                height: "40px",
+                padding: "5px",
+                readOnly: true,
+              },
+            }}
+          />
+        </div>
+      </div>
+      <div>
+        <textarea className="profile_textarea" />
+        <button className="cnfpwd_update_button" onClick={handleSubmit}>
           Update
         </button>
-        <Link to={"/admin_dashboard"}>
-          {" "}
-          <button
-            type="button"
-            className="cancel_button"
-            onClick={handleCancel}
-          >
-            Cancel
-          </button>
-        </Link>
+        <Popup
+          trigger={
+            <button className="cnfpwd_cancel_button" style={{ width: "135px" }}>
+              Change Password
+            </button>
+          }
+          modal
+        >
+          {(close) => (
+            <div
+              style={{ height: "210px", padding: "10px", borderRadius: "5px" }}
+            >
+              <div className="change_password_heading">
+                <p>CHANGE PASSWORD</p>
+              </div>
+              <div>
+                <EditPassword close={close} />
+              </div>
+            </div>
+          )}
+        </Popup>
       </div>
     </div>
   );

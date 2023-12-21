@@ -1,9 +1,12 @@
-import React from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { TextField } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../../AuthContext";
 
-function Edit_password() {
+function EditPassword({ close }) {
+  const { currentuserId } = useAuth();
   const [passwords, setPasswords] = useState({
     oldPassword: "",
     newPassword: "",
@@ -12,16 +15,16 @@ function Edit_password() {
   const handlePasswordUpdate = async () => {
     // Check if newPassword and confirmPassword match
     if (passwords.newPassword !== passwords.confirmPassword) {
-      alert("New password and confirmation password don't match");
+      toast.error("New password and confirmation password don't match");
       return;
     }
     function validatePassword(newPassword) {
       // Password pattern: 8 characters, at least one uppercase letter, one special character, and one digit
-      var passwordPattern = /^(?=.*[A-Z])(?=.*[\W_])(?=.*\d).{8,}$/;
+      const passwordPattern = /^(?=.*[A-Z])(?=.*[\W_])(?=.*\d).{8,}$/;
       return passwordPattern.test(newPassword);
     }
     if (!validatePassword(passwords.newPassword)) {
-      alert(
+      toast.error(
         "Invalid password format:\n password must contain\n 8 characters\n at least one uppercase letter\n at least one special character\n one digit"
       );
       return;
@@ -29,147 +32,95 @@ function Edit_password() {
 
     try {
       // Send a PUT request to update the password
-      await axios.put("http://localhost:3008/changepassword", {
+      const data = {
         oldPassword: passwords.oldPassword,
         newPassword: passwords.newPassword,
-        id: changedData.id,
-      });
-      alert("Password updated successfully");
-      setPasswords({ oldPassword: "", newPassword: "", confirmPassword: "" });
+        id: currentuserId,
+      };
+      console.log(data);
+      await axios.put(`http://localhost:3002/api/changepassword`, data);
+      toast.success("Password updated successfully");
     } catch (error) {
       console.error("Error updating password:", error);
-      alert("Invalid old password");
+      toast.error("Invalid old password");
     }
   };
-
-  const handlecancel = async () => {
-    try {
-      setPasswords({ oldPassword: "", newPassword: "", confirmPassword: "" });
-    } catch {
-      console.log("not cancelled");
-    }
-  };
-  // image upload
-  const [ischanged, setischanged] = useState(false);
-  const [selectedFile, setSelectedFile] = useState();
-  const [changedData, setChangedData] = useState({
-    id: "",
-    image: "",
-  });
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3008/account")
-      .then((response) => {
-        if (response.data && response.data.length > 0) {
-          const userData = response.data[0];
-          setChangedData({
-            id: userData.id,
-            image: userData.image,
-          });
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [ischanged]);
-  const uploadImage = async () => {
-    if (!selectedFile) {
-      alert("Please select an image to upload");
-      return;
-    }
-    // Create a FormData object to send the image file
-    const formData = new FormData();
-    formData.append("photos", selectedFile);
-    //upload image to aws bucket
-    try {
-      await axios.post("http://localhost:3008/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      alert("Image uploaded to successfully");
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      alert("Image upload failed");
-    }
-    //to get the url from bucket and store in database
-    await axios.get(
-      `http://localhost:3008/url/${selectedFile.name}/${changedData.id}`
-    );
-    setischanged(!ischanged);
-  };
-
-  // Function to handle file selection
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+  const handleCancel = () => {
+    close();
   };
 
   return (
-    <div className="secondhalf">
-      <h2 className="movedown">PASSWORD</h2>
-      <br></br>
-      <div className="divide ">
-        <div className="both">
-          <div className="form-row">
-            <label htmlfor="oldpassword">Old Password </label>
-            <input
-              type="text"
-              name="oldpassword"
-              id="oldpassword"
-              value={passwords.oldPassword}
-              onChange={(e) =>
-                setPasswords({ ...passwords, oldPassword: e.target.value })
-              }
-            />
-            <br />
-          </div>
-
-          <div className="form-row">
-            <label htmlfor="newpassword">New Password</label>
-            <input
-              type="password"
-              name="newpassword"
-              id="newpassword"
-              value={passwords.newPassword}
-              onChange={(e) =>
-                setPasswords({ ...passwords, newPassword: e.target.value })
-              }
-            />
-            <br />
-          </div>
-        </div>
-        <br></br>
-        <div className="both">
-          <div className="margin">
-            <div className="form-row">
-              <label htmlfor="confirmpassword">Confirm Password </label>
-              <input
-                type="password"
-                name="confirmpassword"
-                id="confirmpassword"
-                value={passwords.confirmPassword}
-                onChange={(e) =>
-                  setPasswords({
-                    ...passwords,
-                    confirmPassword: e.target.value,
-                  })
-                }
-              />
-              <br></br>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="fullbutton">
-        <button
-          type="button"
-          className="update_button"
-          onClick={handlePasswordUpdate}
-        >
+    <div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="colored"
+      />
+      <TextField
+        label="Old Password *"
+        type="password"
+        name="oldpassword"
+        id="oldpassword"
+        style={{ marginBottom: "10px" }}
+        value={passwords.oldPassword}
+        onChange={(e) =>
+          setPasswords({ ...passwords, oldPassword: e.target.value })
+        }
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        InputProps={{
+          style: {
+            height: "40px",
+            padding: "5px",
+          },
+        }}
+      />
+      <TextField
+        label="New Password *"
+        type="password"
+        name="newpassword"
+        id="newpassword"
+        value={passwords.newPassword}
+        style={{ width: "47%", marginRight: "6%" }}
+        onChange={(e) =>
+          setPasswords({ ...passwords, newPassword: e.target.value })
+        }
+        InputLabelProps={{ shrink: true }}
+        InputProps={{
+          style: {
+            height: "40px",
+            padding: "5px",
+          },
+        }}
+      />
+      <TextField
+        label="Confirm Password *"
+        type="password"
+        name="confirmpassword"
+        id="confirmpassword"
+        style={{ width: "47%" }}
+        value={passwords.confirmPassword}
+        onChange={(e) =>
+          setPasswords({ ...passwords, confirmPassword: e.target.value })
+        }
+        InputLabelProps={{ shrink: true }}
+        InputProps={{
+          style: {
+            height: "40px",
+            padding: "5px",
+          },
+        }}
+      />
+      <div style={{ marginTop: "5%" }}>
+        <button className="cnfpwd_update_button" onClick={handlePasswordUpdate}>
           Update
         </button>
-        <button type="button" className="cancel_button" onClick={handlecancel}>
+        <button className="cnfpwd_cancel_button" onClick={handleCancel}>
           Cancel
         </button>
       </div>
@@ -177,4 +128,4 @@ function Edit_password() {
   );
 }
 
-export default Edit_password;
+export default EditPassword;

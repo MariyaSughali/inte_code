@@ -18,7 +18,6 @@ import { useAuth } from "../../AuthContext";
 
 function Main_reviewer() {
   const [draftData, setDraftData] = useState([]);
-  const [completedData, setCompletedData] = useState([]);
   const [todotask, setTodoData] = useState([]);
   const [myQueueData, setMyQueueData] = useState([]);
   const [ischanged, setischanged] = useState(true);
@@ -39,8 +38,9 @@ function Main_reviewer() {
   const { currentuserId } = useAuth();
 
   useEffect(() => {
-    // change to user_logged in details
     const user_id = currentuserId;
+
+    // change to user_logged in details
     const user_language_id = 1;
 
     axios.get("http://localhost:3002/api/getTodoList").then((response) => {
@@ -66,9 +66,6 @@ function Main_reviewer() {
             )
           );
           setDraftData(response.data.filter((user) => user.isdraft === true));
-          setCompletedData(
-            response.data.filter((user) => user.iscompleted === true)
-          );
         }
       })
       .catch((error) => {
@@ -184,7 +181,6 @@ function Main_reviewer() {
                   </button>
                 }
                 position="bottom right"
-                // closeOnDocumentClick={false}
               >
                 {(close) => (
                   <div className="modal">
@@ -210,7 +206,6 @@ function Main_reviewer() {
                               unpicked: filterOptions.unpicked,
                             });
                           }
-                          setFilteredData(filteredData);
                         }}
                         sx={{
                           "& .MuiSvgIcon-root": {
@@ -241,7 +236,6 @@ function Main_reviewer() {
                               unpicked: filterOptions.unpicked,
                             });
                           }
-                          setFilteredData(filteredData);
                         }}
                         sx={{
                           "& .MuiSvgIcon-root": {
@@ -272,7 +266,6 @@ function Main_reviewer() {
                               unpicked: filterOptions.unpicked,
                             });
                           }
-                          setFilteredData(filteredData);
                         }}
                         sx={{
                           "& .MuiSvgIcon-root": {
@@ -303,7 +296,6 @@ function Main_reviewer() {
                               unpicked: false,
                             });
                           }
-                          setFilteredData(filteredData);
                         }}
                         sx={{
                           "& .MuiSvgIcon-root": {

@@ -23,12 +23,13 @@ router.delete("/deleteuser", user_route.deleteUser);
 router.get("/roles", user_route.roles_list);
 
 // change profile dtails
+//get profile data
+const profile = require("../controllers/profile_page");
+router.get("/getuserprofile/:id", profile.getUserData);
 // password
-const change_password = require("../controllers/change_password");
-router.put("/changepassword", change_password);
+router.put("/changepassword", profile.change_password);
 // update info
-const edit_profile = require("../controllers/profile");
-router.put("/editprofile", edit_profile);
+router.put("/editprofile", profile.edit_profile);
 
 // profile picture
 const profile_picture = require("../controllers/profile_picture");

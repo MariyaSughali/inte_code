@@ -93,10 +93,9 @@
   flex-direction: row;
   margin-top: 20px;
 }
-
+/* 
 input[type="text"] {
   border-radius: 10px;
-  /* border: 2px solid #868686; */
 
   justify-content: flex-end;
   display: flex;
@@ -128,7 +127,7 @@ input[type="password"] {
   border-radius: 10px;
 
   border: 2px solid #868686;
-}
+} */
 .Submit {
   border-width: 10%;
   text-align: center;
